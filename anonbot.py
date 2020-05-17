@@ -1,6 +1,6 @@
 import discord
 import os
-defalut_cannel_id = os.environ["default_cannel_id"]
+defalut_cannel_id = int(os.environ["default_cannel_id"])
 class MyClient(discord.Client):
     async def on_message(self, message):
         if(str(message.channel)[:14] == 'Direct Message'and message.author.bot == False):
