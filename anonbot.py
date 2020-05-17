@@ -6,4 +6,4 @@ class MyClient(discord.Client):
             await client.get_channel(637654161026056215).send(message.content)
 client = MyClient()
 access_token = os.environ["BOT_TOKEN"]
-client.run('access_token')
+client.run(access_token)
