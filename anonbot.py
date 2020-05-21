@@ -3,7 +3,7 @@ import hashlib
 import os
 
 user_channel = {}   #유저 채널 저장 장소
-password_token = "12390usadnlfnlsdn98fne23fn9sdh9fho23h9efdystn23ohrft78eswye2h9o" #서버 비밀번호 생성 토큰
+password_token = os.environ["PASS_TOKEN"] #서버 비밀번호 생성 토큰
 
 def enc_def(message,contents):  #비밀번호 생성 함수
     enc = hashlib.sha256()
