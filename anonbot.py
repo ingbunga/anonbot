@@ -26,10 +26,7 @@ class MyClient(discord.Client):
         sender = message.author     #보낸사람을 저장한다
         if(message.author.bot == True):     #봇 메세지 패스
             pass
-        if(str(message.channel)[:14] == 'Direct Message'):   #만일 메세지가 DM이라면.
-            
-            cmd = message.content.split(' ')[0]     #공백으로 명령어를 구분한다.
-            sender = message.author     #보낸사람을 저장한다
+        elif(str(message.channel)[:14] == 'Direct Message'):   #만일 메세지가 DM이라면.
             
             if cmd == 'select':     #선택명령어
                 if len(message.content.split())==2:
