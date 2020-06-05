@@ -1,9 +1,15 @@
+
 import discord
 import hashlib
 import os
+import time
 
 user_channel = {}   #유저 채널 저장 장소
+typing_channel = {} #타자 타임어택 채널 저장장소
 password_token = os.environ["PASS_TOKEN"] #서버 비밀번호 생성 토큰
+lylics = os.environ["lylics"]           # 노래가사
+songstart = os.environ["songstart"]     # 노래 가사 치기 타임어택 시작 명령어
+lylics = lylics.split('\n')
 
 def enc_def(message,contents):  #비밀번호 생성 함수
     enc = hashlib.sha256()
@@ -76,6 +82,33 @@ class MyClient(discord.Client):
             #유저의 select 등록이 되있지 않고 select 하지도 않음
             else:
                 await message.channel.send("```please select channel```")
+        
+        else:   #일반 채팅
+            if cmd == f'!!{songstart}!!':   #노래가사 치기 타임어택 시작
+                if typing_channel.get(message.channel.id)==None:
+                    typing_channel[message.channel.id] = [f"{sender.name}#{sender.discriminator}",0,time.time()]
+                    await message.channel.send(f"```{lylics[typing_channel[message.channel.id][1]]}```")
+            else:
+                if typing_channel.get(message.channel.id) != None:  #만일 노래가사 타임어택 중이라면:
+            
+                    if typing_channel.get(message.channel.id)[0]==f"{sender.name}#{sender.discriminator}":      #메세지 보내는사람이 타임어택 시작자라면
+                        
+                        if lylics[typing_channel[message.channel.id][1]]==message.content:     #정확하게 입력했다면
+                            
+                            if typing_channel[message.channel.id][1] >= len(lylics)-1:   #마지막 문장을 친것이라면:
+                                await message.channel.send(f"```welldone. your play time is {time.time()-typing_channel[message.channel.id][2]}sec```")
+                                del typing_channel[message.channel.id]
+                            
+                            else:
+                                typing_channel[message.channel.id][1] += 1
+                                await message.channel.send(f"```{lylics[typing_channel[message.channel.id][1]]}```")
+
+                        else:       #문장이 틀렷다면
+                            await message.channel.send(f"```gameover. your play time is {time.time()-typing_channel[message.channel.id][2]}sec```")
+                            del typing_channel[message.channel.id]
+                    
+                    elif typing_channel.get(message.channel.id):
+                        await message.channel.send("```already typing timeattack is playing```")
 
 client = MyClient()
 access_token = os.environ["BOT_TOKEN"]
