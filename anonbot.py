@@ -89,6 +89,8 @@ class MyClient(discord.Client):
                 if typing_channel.get(message.channel.id)==None:
                     typing_channel[message.channel.id] = [f"{sender.name}#{sender.discriminator}",0,time.time()]
                     await message.channel.send(f"```{lylics[typing_channel[message.channel.id][1]]}```")
+                else:
+                    await message.channel.send("```already typing timeattack is playing```")
             else:
                 if typing_channel.get(message.channel.id) != None:  #만일 노래가사 타임어택 중이라면:
             
@@ -107,9 +109,6 @@ class MyClient(discord.Client):
                         else:       #문장이 틀렷다면
                             await message.channel.send(f"```gameover. your play time is {time.time()-typing_channel[message.channel.id][2]}sec```")
                             del typing_channel[message.channel.id]
-                    
-                    elif typing_channel.get(message.channel.id):
-                        await message.channel.send("```already typing timeattack is playing```")
 
 client = MyClient()
 access_token = os.environ["BOT_TOKEN"]
