@@ -22,7 +22,11 @@ def enc_def(message,contents):  #비밀번호 생성 함수
 
 class MyClient(discord.Client):
     async def on_message(self, message):
-        if(str(message.channel)[:14] == 'Direct Message'and message.author.bot == False):   #만일 메세지가 DM이라면.
+        cmd = message.content.split(' ')[0]     #공백으로 명령어를 구분한다.
+        sender = message.author     #보낸사람을 저장한다
+        if(message.author.bot == True):     #봇 메세지 패스
+            pass
+        if(str(message.channel)[:14] == 'Direct Message'):   #만일 메세지가 DM이라면.
             
             cmd = message.content.split(' ')[0]     #공백으로 명령어를 구분한다.
             sender = message.author     #보낸사람을 저장한다
